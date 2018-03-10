@@ -7,32 +7,25 @@
     function floatEquals(v1,v2,delta) {
       return Math.abs(v1 - v2) <= delta;
     }
-
     function Ball(ctx,maxRadius) {
       this.calcTargetPoint = function() {
         this.radius = Math.random() * this.maxRadius + 1
         this.maxX = ctx.canvas.width - this.radius
         this.maxY = ctx.canvas.height - this.radius
-
         this.targetX = Math.random() * this.maxX
         this.targetY = Math.random() * this.maxY
-
         var speed = Math.random() * 50 + 50
         this.velX = (this.targetX - this.x) / speed
         this.velY = (this.targetY - this.y) / speed
-
         var r = Math.floor(Math.random() * 155 + 100)
         var g = Math.floor(Math.random() * 155 + 100)
         var b = Math.floor(Math.random() * 155 + 100)
         this.fillColor = "rgb(" + r + "," + g + "," + b + ")"
       }
-
       this.update = function() {
         var needNewTarget = false;
-
         this.x += this.velX
         this.y += this.velY
-
         if( this.x <= this.radius ) {
           this.x = this.radius;
           needNewTarget = true;
@@ -52,12 +45,10 @@
         if( floatEquals(this.x,this.targetX,0.9) && floatEquals(this.y,this.targetY,0.9) ) {
           needNewTarget = true;
         }
-
         if( needNewTarget ) {
           this.calcTargetPoint();
         }
       }
-
       this.draw = function() {
         this.ctx.fillStyle = this.fillColor;
         this.ctx.beginPath();
@@ -66,20 +57,15 @@
         this.ctx.stroke();
         this.ctx.fill();
       }
-
       this.ctx = ctx
       this.maxRadius = maxRadius
       this.radius = Math.random() * maxRadius + 1
-
       this.maxX = ctx.canvas.width - this.radius
       this.maxY = ctx.canvas.height - this.radius
-
       this.x = Math.random() * this.maxX
       this.y = Math.random() * this.maxY
-
       this.calcTargetPoint()
     }
-
     window.onload = function() {
       canvas = document.getElementById("tutorial")
       if( canvas && canvas.getContext ) {
@@ -89,31 +75,57 @@
       }
     }
 
+
+
+
     function initDemo() {
       gradient = ctx.createLinearGradient(0,0,0,300);
       gradient.addColorStop(0,"#202020");
       gradient.addColorStop(1,"#304030");
+      balls = new Array(0)
+      for(var i = 0; i < 2; i++) {
+        function makeBalls(){
+          var newBall = new Ball(ctx,10)
+          balls.push(newBall);
 
-      balls = new Array(300)
-      for( var i = 0; i < balls.length; i++ ) {
-        balls[i] = new Ball(ctx,10)
-      }
-    }
-    function loop() {
-      ctx.fillStyle = gradient
-      ctx.fillRect(0,0,canvas.width,canvas.height)
+        }
+        setInterval(makeBalls, 3000)
 
-      for( var i = 0; i < balls.length; i++ ) {
-        balls[i].update()
-        balls[i].draw()
       }
-    }
-  </script>
-</head>
-<body>
-  <canvas id="tutorial" width="500" height="400">
-    Your browser does not support the HTML5 Canvas element.
-    Please, update your browser.
-  </canvas>
-</body>
-</html>
+      //for( var i = 0; i < balls.length; i++ ) {
+          //balls[i] = new Ball(ctx,10)
+        //setInterval(makeBalls, 3000)
+
+        
+
+        
+      }
+
+
+
+
+
+
+
+
+
+
+
+
+      function loop() {
+        ctx.fillStyle = gradient
+        ctx.fillRect(0,0,canvas.width,canvas.height)
+        for( var i = 0; i < balls.length; i++ ) {
+          balls[i].update()
+          balls[i].draw()
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <canvas id="tutorial" width="500" height="400">
+      Your browser does not support the HTML5 Canvas element.
+      Please, update your browser.
+    </canvas>
+  </body>
+  </html>
